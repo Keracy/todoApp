@@ -1,10 +1,9 @@
 const searchInput = document.querySelector(".search-input");
 const addForm = document.querySelector(".add-form");
 const todoList = document.querySelector(".todo-list");
-const completedButton = document.querySelector(".completed-button");
-const activeButton = document.querySelector(".active-button");
 let allTodos = [...todoList.children];
 let buttons = document.querySelector(".toggle-block");
+
 const todoGenerator = (value) => {
   if (value) {
     const newTodo = document.createElement("li");
@@ -15,7 +14,6 @@ const todoGenerator = (value) => {
     allTodos = [...todoList.children];
   }
 };
-
 const todoSearch = (value) => {
   allTodos.forEach((todo) => {
     if (!todo.textContent.toLowerCase().includes(value.toLowerCase()))
@@ -23,49 +21,70 @@ const todoSearch = (value) => {
     else todo.classList.remove("hidden");
   });
 };
-
+const showAll = () => {
+  allTodos.forEach((todo) => {
+    todo.classList.remove('hidden');
+  })
+};
+const showCompleted = () => {
+  allTodos.forEach((todo) => {
+    todo.completed ? todo.classList.remove('hidden') : todo.classList.add('hidden');
+  })
+}
+const showActive = () => {
+  allTodos.forEach((todo) => {
+    todo.completed ? todo.classList.add('hidden') : todo.classList.remove('hidden');
+  })
+}
+//Search
 searchInput.addEventListener("input", (event) => {
   event.preventDefault();
   todoSearch(event.target.value);
 });
 
+//Adding todo
 addForm.addEventListener("submit", (event) => {
   event.preventDefault();
   todoGenerator(event.target.addField.value);
   event.target.addField.value = "";
 });
 
+//Hovering
 todoList.addEventListener("mouseover", (event) => {
   const todo = event.target.closest(".todo-elem");
   todo.style = "background-color: #faf;";
 });
 todoList.addEventListener("mouseout", (event) => {
   const todo = event.target.closest(".todo-elem");
-  todo.style = "background-color: cornsilk;";
+  todo.style = "cornsilk;";
 });
+
+//Marking status Completed/Active
 todoList.addEventListener("click", (event) => {
   const todo = event.target.closest(".todo-elem");
   todo.completed = todo.completed ? false : true;
-  if (todo.completed) {
-  }
+  todo.classList.toggle('completed');
   console.log(todo.completed);
 });
-completedButton.addEventListener("click", (event) => {
-  todoList.innerHTML = "";
-  completedTodos.forEach((todo) => {
-    todoGenerator(todo.innerText);
-  });
-});
-activeButton.addEventListener("click", () => {
-  todoList.innerHTML = "";
-  activeTodos.forEach((todo) => {
-    todoGenerator(todo.innerText);
-  });
-});
+
+//Switching All/Completed/Active
 buttons.addEventListener("click", (event) => {
-  const button = event.target.closest(".toggle-button");
-  [...buttons.children].forEach((btn) => {
-    btn.classList.remove("current");
-  });
-  button.classList.add("current");
+  if (event.target.closest(".toggle-button")) {
+    const button = event.target.closest(".toggle-button");
+    [...buttons.children].forEach((btn) => {
+      btn.classList.remove("current");
+    });
+    button.classList.add("current");
+    switch(button.name){
+      case 'all':
+        showAll();
+        break;
+      case 'completed':
+        showCompleted();
+        break;
+      case 'active':
+        showActive();
+        break;
+    }
+  }
 });

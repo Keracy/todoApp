@@ -33,6 +33,7 @@ body {
 }
 .todo-elem {
   width: 100%;
+  font-size: 30px;
   background-color: cornsilk;
   border: 2px burlywood solid;
   padding: 10px;
@@ -42,4 +43,7 @@ body {
 }
 .current {
   color: blueviolet;
+}
+.completed{
+  color: #33CC00;
 }
