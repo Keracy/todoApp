@@ -27,18 +27,26 @@ body {
   font-weight: lighter;
 }
 .todo-list {
+  overflow: auto;
   width: 100%;
   list-style-type: none;
   padding-left: 0px;
+  max-height: 400px;
 }
 .todo-elem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
   font-size: 30px;
   background-color: cornsilk;
   border: 2px burlywood solid;
   padding: 10px;
 }
-.hidden {
+.hidden{
+  display:none;
+}
+.hidden-search {
   display: none;
 }
 .current {
@@ -46,4 +54,13 @@ body {
 }
 .completed{
   color: #33CC00;
+}
+.destroy{
+  border-radius: 20px;
+  width: 20px;
+  height: 20px;
+  background-color: red;
+}
+.destroy:hover{
+  background-color: rgb(200,0,0);
 }

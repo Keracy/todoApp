@@ -2,23 +2,25 @@ const searchInput = document.querySelector(".search-input");
 const addForm = document.querySelector(".add-form");
 const todoList = document.querySelector(".todo-list");
 let allTodos = [...todoList.children];
-let buttons = document.querySelector(".toggle-block");
-
+const buttons = document.querySelector(".toggle-block");
 const todoGenerator = (value) => {
-  if (value) {
+  if (value.trim()) {
     const newTodo = document.createElement("li");
     newTodo.innerText = value;
     newTodo.className = "todo-elem";
     todoList.appendChild(newTodo);
     newTodo.completed = false;
+    const destroyButton = document.createElement('div');
+    destroyButton.classList.add('destroy');
+    newTodo.appendChild(destroyButton);
     allTodos = [...todoList.children];
   }
 };
 const todoSearch = (value) => {
   allTodos.forEach((todo) => {
     if (!todo.textContent.toLowerCase().includes(value.toLowerCase()))
-      todo.classList.add("hidden");
-    else todo.classList.remove("hidden");
+      todo.classList.add("hidden-search");
+    else todo.classList.remove("hidden-search");
   });
 };
 const showAll = () => {
@@ -30,12 +32,12 @@ const showCompleted = () => {
   allTodos.forEach((todo) => {
     todo.completed ? todo.classList.remove('hidden') : todo.classList.add('hidden');
   })
-}
+};
 const showActive = () => {
   allTodos.forEach((todo) => {
     todo.completed ? todo.classList.add('hidden') : todo.classList.remove('hidden');
   })
-}
+};
 //Search
 searchInput.addEventListener("input", (event) => {
   event.preventDefault();
@@ -61,6 +63,9 @@ todoList.addEventListener("mouseout", (event) => {
 
 //Marking status Completed/Active
 todoList.addEventListener("click", (event) => {
+  if(event.target.closest('.destroy')){
+    todoList.removeChild(event.target.closest('.destroy').parentNode);
+  }
   const todo = event.target.closest(".todo-elem");
   todo.completed = todo.completed ? false : true;
   todo.classList.toggle('completed');
